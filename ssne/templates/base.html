@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SSNE |{% endblock %} </title>
+            <style>
+            nav {
+                background-color: #06402B
+            }
+        </style>
 </head>
 <body>
-    {% block content %}
-    <h1>Navegação</h1>
+    {% block nav %}
+    <nav><h1>Navegação</h1></nav>
     {% endblock %}
 </body>
 </html>
