@@ -1,8 +1,68 @@
 {% extends "base.html" %}
-{% block title %}{{ block.super }} Início{% endblock %}
+{% block title %}| Início{% endblock %}
 {% block content %}
-<div class="classe">
-  <h1>SSNE</h1>
 
+<div class="p-4 mb-4 bg-body-tertiary rounded-3">
+    <h1 class="display-6">Bem-vindo(a) ao SSNE!</h1>
 </div>
+
+<h2 class="h4 mb-3">
+    {% if user.is_authenticated and user.curso %}
+    Avisos para {{ user.get_curso_display }}
+    {% else %}
+    Avisos gerais
+    {% endif %}
+</h2>
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
+    {% for aviso in avisos %}
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            {% if aviso.imagem %}
+            <img src="{{ aviso.imagem.url }}" class="card-img-top" alt="{{ aviso.titulo }}">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ aviso.titulo }}</h5>
+                <p class="card-subtitle text-body-secondary mb-2">
+                    {{ aviso.data_publicacao }}
+                    &middot;
+                    {% if aviso.curso %}{{ aviso.get_curso_display }}{% else %}Todos os cursos{% endif %}
+                </p>
+                <div>{{ aviso.conteudo|safe }}</div>
+            </div>
+            {% if perms.ssne.change_aviso or perms.ssne.delete_aviso %}
+            <div class="card-footer d-flex gap-2">
+                {% if perms.ssne.change_aviso %}
+                <a href="{% url 'editar_aviso' aviso.id %}" class="btn btn-sm btn-outline-secondary">Editar</a>
+                {% endif %}
+                {% if perms.ssne.delete_aviso %}
+                <a href="{% url 'remover_aviso' aviso.id %}" class="btn btn-sm btn-outline-danger">Remover</a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <p>Nenhum aviso publicado ainda.</p>
+    {% endfor %}
+</div>
+
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if avisos.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?pagina={{ avisos.previous_page_number }}" aria-label="Anterior">&laquo;</a>
+        </li>
+        {% endif %}
+        {% for pagina in range_elided %}
+        <li class="page-item"><a class="page-link" href="?pagina={{ pagina }}">{{ pagina }}</a></li>
+        {% endfor %}
+        {% if avisos.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?pagina={{ avisos.next_page_number }}" aria-label="Próxima">&raquo;</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+
 {% endblock %}
