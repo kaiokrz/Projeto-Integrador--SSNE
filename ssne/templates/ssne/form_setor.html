@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}| {% if is_editar %}Editar Setor{% else %}Novo Setor{% endif %}{% endblock %}
+{% block content %}
+
+<h1 class="h4 mb-4">{% if is_editar %}Editar Setor{% else %}Cadastrar novo Setor{% endif %}</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    {% crispy form %}
+</form>
+
+{% endblock %}
