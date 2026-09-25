@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from .models import Setor, Aviso
-from .forms import SetorForm, AvisoForm
+from .forms import SetorForm, AvisoForm, MensagemForm
 
 def index(request): 
     return render(request, "ssne/index.html")
@@ -115,3 +115,14 @@ def remover_aviso(request, id_aviso):
     else:
         context = {"titulo_objeto": aviso.titulo}
         return render(request, "ssne/confirmar_remocao.html", context)
+    
+def contato(request):
+    form = MensagemForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Mensagem enviada com sucesso. Obrigado pela contribuição!")
+        return redirect("contato")
+    return render(request, "ssne/contato.html", {"form": form})
+
+def mapa(request):
+    return render(request, "ssne/mapa.html")

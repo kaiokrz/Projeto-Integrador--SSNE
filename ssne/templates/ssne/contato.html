@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Contato | SSNE{% endblock %}
+{% block content %}
+<section id="main"><div class="container"><div class="row">
+    <div id="content" class="col-7 col-12-medium"><article class="box post ssne-form-card">
+        <header><p class="ssne-kicker">SUPORTE</p><h2>Fale com o SSNE</h2><p>Envie uma dúvida, sugestão ou correção sobre as informações do campus.</p></header>
+        <form method="post" class="ssne-form">{% csrf_token %}{{ form.non_field_errors }}<div class="row gtr-50">
+            <div class="col-12"><label for="{{ form.nome.id_for_label }}">{{ form.nome.label }}</label>{{ form.nome }}{{ form.nome.errors }}</div>
+            <div class="col-12"><label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>{{ form.email }}{{ form.email.errors }}</div>
+            <div class="col-12"><label for="{{ form.mensagem.id_for_label }}">{{ form.mensagem.label }}</label>{{ form.mensagem }}{{ form.mensagem.errors }}</div>
+            <div class="col-12"><button type="submit" class="button icon solid fa-paper-plane">Enviar mensagem</button></div>
+        </div></form>
+    </article></div>
+    <div id="sidebar" class="col-5 col-12-medium"><section class="ssne-side-section ssne-contact-info">
+        <p class="ssne-kicker">POR QUE ENVIAR?</p><h3>Ajude a manter o guia útil</h3><p>Mensagens podem ajudar a registrar informações faltantes, corrigir dados de setores e indicar melhorias para novos estudantes.</p>
+        <ul class="divided"><li><span class="icon solid fa-map-marker-alt"></span> Localização de bloco ou setor</li><li><span class="icon solid fa-bullhorn"></span> Aviso que precisa ser atualizado</li><li><span class="icon solid fa-lightbulb"></span> Sugestão para o SSNE</li></ul>
+    </section></div>
+</div></div></section>
+{% endblock %}

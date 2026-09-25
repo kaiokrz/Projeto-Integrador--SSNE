@@ -1,68 +1,113 @@
 {% extends "base.html" %}
-{% block title %}| Início{% endblock %}
+{% block title %}Início | SSNE{% endblock %}
 {% block content %}
-
-<div class="p-4 mb-4 bg-body-tertiary rounded-3">
-    <h1 class="display-6">Bem-vindo(a) ao SSNE!</h1>
-</div>
-
-<h2 class="h4 mb-3">
-    {% if user.is_authenticated and user.curso %}
-    Avisos para {{ user.get_curso_display }}
-    {% else %}
-    Avisos gerais
-    {% endif %}
-</h2>
-
-<div class="row row-cols-1 row-cols-md-2 g-4">
-    {% for aviso in avisos %}
-    <div class="col">
-        <div class="card h-100 shadow-sm">
-            {% if aviso.imagem %}
-            <img src="{{ aviso.imagem.url }}" class="card-img-top" alt="{{ aviso.titulo }}">
-            {% endif %}
-            <div class="card-body">
-                <h5 class="card-title">{{ aviso.titulo }}</h5>
-                <p class="card-subtitle text-body-secondary mb-2">
-                    {{ aviso.data_publicacao }}
-                    &middot;
-                    {% if aviso.curso %}{{ aviso.get_curso_display }}{% else %}Todos os cursos{% endif %}
-                </p>
-                <div>{{ aviso.conteudo|safe }}</div>
+<section id="features">
+    <div class="container">
+        <header>
+            <p class="ssne-kicker">BEM-VINDO AO CAMPUS</p>
+            <h2>Informação certa, <strong>no lugar certo</strong></h2>
+        </header>
+        <div class="row aln-center ssne-feature-row">
+            <div class="col-4 col-6-medium col-12-small">
+                <section class="ssne-feature-card">
+                    <div class="ssne-icon-box icon solid fa-map-marked-alt"></div>
+                    <header><h3>Mapa do campus</h3></header>
+                    <p>Consulte os blocos e setores cadastrados para descobrir rapidamente onde fica cada espaço.</p>
+                    <ul class="actions"><li><a href="{% url 'mapa' %}" class="button small icon solid fa-arrow-right">Abrir mapa</a></li></ul>
+                </section>
             </div>
-            {% if perms.ssne.change_aviso or perms.ssne.delete_aviso %}
-            <div class="card-footer d-flex gap-2">
-                {% if perms.ssne.change_aviso %}
-                <a href="{% url 'editar_aviso' aviso.id %}" class="btn btn-sm btn-outline-secondary">Editar</a>
-                {% endif %}
-                {% if perms.ssne.delete_aviso %}
-                <a href="{% url 'remover_aviso' aviso.id %}" class="btn btn-sm btn-outline-danger">Remover</a>
-                {% endif %}
+            <div class="col-4 col-6-medium col-12-small">
+                <section class="ssne-feature-card">
+                    <div class="ssne-icon-box icon solid fa-bullhorn"></div>
+                    <header><h3>Avisos relevantes</h3></header>
+                    <p>Veja comunicados gerais e, quando aplicável, os avisos destinados ao seu curso.</p>
+                    <ul class="actions"><li><a href="#avisos" class="button small icon solid fa-arrow-down">Ver avisos</a></li></ul>
+                </section>
             </div>
-            {% endif %}
+            <div class="col-4 col-6-medium col-12-small">
+                <section class="ssne-feature-card">
+                    <div class="ssne-icon-box icon solid fa-building"></div>
+                    <header><h3>Blocos e setores</h3></header>
+                    <p>Encontre salas, secretarias, coordenações, laboratórios, biblioteca e outros pontos.</p>
+                    <ul class="actions"><li><a href="{% url 'mapa' %}" class="button small icon solid fa-building">Explorar</a></li></ul>
+                </section>
+            </div>
         </div>
     </div>
-    {% empty %}
-    <p>Nenhum aviso publicado ainda.</p>
-    {% endfor %}
-</div>
+</section>
 
-<nav class="mt-4">
-    <ul class="pagination justify-content-center">
-        {% if avisos.has_previous %}
-        <li class="page-item">
-            <a class="page-link" href="?pagina={{ avisos.previous_page_number }}" aria-label="Anterior">&laquo;</a>
-        </li>
-        {% endif %}
-        {% for pagina in range_elided %}
-        <li class="page-item"><a class="page-link" href="?pagina={{ pagina }}">{{ pagina }}</a></li>
-        {% endfor %}
-        {% if avisos.has_next %}
-        <li class="page-item">
-            <a class="page-link" href="?pagina={{ avisos.next_page_number }}" aria-label="Próxima">&raquo;</a>
-        </li>
-        {% endif %}
-    </ul>
-</nav>
+<section id="banner">
+    <div class="container">
+        <p><strong>Primeiros dias no IFRN?</strong> Use o SSNE para se orientar antes de sair procurando por salas.</p>
+        <ul class="actions">
+            <li><a href="{% url 'mapa' %}" class="button icon solid fa-location-arrow">Encontrar um setor</a></li>
+            <li><a href="#avisos" class="button alt icon solid fa-bullhorn">Conferir avisos</a></li>
+        </ul>
+    </div>
+</section>
 
+<section id="main">
+    <div class="container">
+        <div class="row">
+            <div id="content" class="col-8 col-12-medium">
+                <header class="ssne-section-heading" id="avisos">
+                    <p class="ssne-kicker">COMUNICADOS</p>
+                    <h2>{% if user.is_authenticated and user.curso %}Avisos para <strong>{{ user.get_curso_display }}</strong>{% else %}Avisos do campus{% endif %}</h2>
+                </header>
+
+                {% for aviso in avisos %}
+                <article class="box post ssne-notice-card">
+                    <header>
+                        <div class="ssne-notice-meta"><span>{{ aviso.data_publicacao|date:'d/m/Y' }}</span><span>{% if aviso.curso %}{{ aviso.get_curso_display }}{% else %}Todos os cursos{% endif %}</span></div>
+                        <h2>{{ aviso.titulo }}</h2>
+                    </header>
+                    {% if aviso.imagem %}<div class="image featured ssne-notice-image"><img src="{{ aviso.imagem.url }}" alt="{{ aviso.titulo }}" /></div>{% endif %}
+                    <div class="ssne-richtext">{{ aviso.conteudo|safe }}</div>
+                    {% if perms.ssne.change_aviso or perms.ssne.delete_aviso %}
+                    <ul class="actions">
+                        {% if perms.ssne.change_aviso %}<li><a href="{% url 'editar_aviso' aviso.id %}" class="button small icon solid fa-pen">Editar</a></li>{% endif %}
+                        {% if perms.ssne.delete_aviso %}<li><a href="{% url 'remover_aviso' aviso.id %}" class="button small alt icon solid fa-trash">Remover</a></li>{% endif %}
+                    </ul>
+                    {% endif %}
+                </article>
+                {% empty %}
+                <article class="box post ssne-empty-state">
+                    <div class="ssne-icon-box icon solid fa-bullhorn"></div>
+                    <h3>Nenhum aviso publicado ainda</h3>
+                    <p>Quando houver um comunicado relevante para os estudantes, ele aparecerá aqui.</p>
+                </article>
+                {% endfor %}
+
+                {% if avisos.paginator.num_pages > 1 %}
+                <nav class="ssne-pagination" aria-label="Paginação dos avisos">
+                    {% if avisos.has_previous %}<a href="?pagina={{ avisos.previous_page_number }}#avisos" class="icon solid fa-angle-left" aria-label="Página anterior"></a>{% endif %}
+                    {% for pagina in avisos.paginator.page_range %}<a class="{% if pagina == avisos.number %}active{% endif %}" href="?pagina={{ pagina }}#avisos">{{ pagina }}</a>{% endfor %}
+                    {% if avisos.has_next %}<a href="?pagina={{ avisos.next_page_number }}#avisos" class="icon solid fa-angle-right" aria-label="Próxima página"></a>{% endif %}
+                </nav>
+                {% endif %}
+            </div>
+
+            <div id="sidebar" class="col-4 col-12-medium">
+                <section class="ssne-side-section">
+                    <header><p class="ssne-kicker">VISÃO GERAL</p><h3>O que já está cadastrado</h3></header>
+                    <div class="ssne-stat-grid">
+                        <div class="ssne-stat"><strong>{{ total_blocos }}</strong><span>blocos</span></div>
+                        <div class="ssne-stat"><strong>{{ total_setores }}</strong><span>setores</span></div>
+                        <div class="ssne-stat"><strong>{{ total_avisos }}</strong><span>avisos</span></div>
+                    </div>
+                    <ul class="actions"><li><a href="{% url 'mapa' %}" class="button icon solid fa-map">Ver diretório</a></li></ul>
+                </section>
+
+                <section class="ssne-side-section">
+                    <header><p class="ssne-kicker">ACESSO RÁPIDO</p><h3>Blocos do campus</h3></header>
+                    <ul class="divided ssne-block-list">
+                        {% for bloco in blocos_destaque %}
+                        <li><a href="{% url 'mapa' %}?bloco={{ bloco.id }}"><strong>{{ bloco.nome }}</strong><span>{{ bloco.setores.count }} setor{{ bloco.setores.count|pluralize }}</span></a></li>
+                        {% empty %}<li>Nenhum bloco cadastrado.</li>{% endfor %}
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

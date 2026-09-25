@@ -1,65 +1,106 @@
 {% load static %}
-<!doctype html>
-<html lang="pt-br">
+<!DOCTYPE HTML>
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSNE {% block title %}{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'ssne/css/style.css' %}">
+    <title>{% block title %}SSNE | Sistema de Suporte para Novos Estudantes{% endblock %}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="description" content="SSNE — guia digital para novos estudantes encontrarem blocos, setores e avisos do campus." />
+    <link rel="stylesheet" href="{% static 'ssne/css/main.css' %}" />
+    <link rel="stylesheet" href="{% static 'ssne/css/ssne.css' %}" />
+    {% block extra_head %}{% endblock %}
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'index' %}">SSNE</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Início</a></li>
-                    {% if perms.ssne.add_aviso %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'novo_aviso' %}">Novo aviso</a></li>
-                    {% endif %}
-                </ul>
-                <ul class="navbar-nav">
-                    {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <span class="nav-link disabled">
-                            Olá, {{ user.username }}{% if user.curso %} ({{ user.get_curso_display }}){% endif %}
-                        </span>
-                    </li>
-                    <li class="nav-item">
-                        <form method="POST" action="{% url 'logout' %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-light btn-sm">Sair</button>
-                        </form>
+<body class="homepage is-preload">
+    <div id="page-wrapper">
+        <nav id="nav" aria-label="Navegação principal">
+            <ul>
+                <li><a class="icon solid fa-home" href="{% url 'index' %}"><span>Início</span></a></li>
+                <li><a class="icon solid fa-bullhorn" href="{% url 'index' %}#avisos"><span>Avisos</span></a></li>
+                <li><a class="icon solid fa-envelope" href="{% url 'contato' %}"><span>Contato</span></a></li>
+                {% if user.is_authenticated %}
+                    {% if perms.ssne.add_aviso or perms.ssne.add_setor or user.is_staff %}
+                    <li>
+                        <a href="#" class="icon solid fa-tools"><span>Gerenciar</span></a>
+                        <ul>
+                            {% if perms.ssne.add_aviso %}<li><a href="{% url 'novo_aviso' %}">Publicar aviso</a></li>{% endif %}
+                            {% if perms.ssne.add_setor %}<li><a href="{% url 'novo_setor' %}">Cadastrar setor</a></li>{% endif %}
+                            {% if user.is_staff %}<li><a href="{% url 'admin:index' %}">Administração</a></li>{% endif %}
+                        </ul>
                     </li>
                     {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
+                {% else %}
+                    <li><a class="icon solid fa-sign-in-alt" href="#"><span>Entrar</span></a></li>
+                {% endif %}
+            </ul>
+        </nav>
 
-    <main class="container py-4">
+        <section id="header">
+            <div class="container">
+                <div class="ssne-header-grid">
+                        <p class="ssne-kicker">IFRN · SISTEMA DE SUPORTE</p>
+                        <h1 id="logo"><a href="{% url 'index' %}">SSNE</a></h1>
+                        <p class="ssne-header-subtitle">Seu guia para chegar, encontrar e se orientar no campus.</p>
+                    {% if user.is_authenticated %}
+                    <div class="ssne-account-card">
+                        <span class="ssne-account-label">Acesso atual</span>
+                        <strong>{{ user.get_full_name|default:user.username }}</strong>
+                        {% if user.curso %}<span>{{ user.get_curso_display }}</span>{% endif %}
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="ssne-logout-button">Sair</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
         {% if messages %}
-        <div>
+        <div class="ssne-messages container" aria-live="polite">
             {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+            <div class="ssne-alert ssne-alert-{{ message.tags|default:'info' }}">
+                <span>{{ message }}</span>
+                <a href="#" class="ssne-alert-close" aria-label="Fechar">&times;</a>
             </div>
             {% endfor %}
         </div>
         {% endif %}
 
-        {% block content %}{% endblock %}
-    </main>
+        <main>{% block content %}{% endblock %}</main>
 
-    <footer class="text-center text-body-secondary py-4 mt-5 border-top">
-        <p class="mb-0">Sistema de Suporte para Novos Estudantes (SSNE) &middot; IFRN</p>
-    </footer>
+        <section id="footer">
+            <div class="container">
+                <header>
+                    <p class="ssne-kicker ssne-kicker-light">SUPORTE AO ESTUDANTE</p>
+                    <h2>Encontrou um problema ou precisa <strong>de orientação?</strong></h2>
+                </header>
+                <div class="row">
+                    <div class="col-7 col-12-medium">
+                        <section>
+                            <p>O SSNE centraliza informações úteis para quem está chegando ao campus. Envie uma mensagem para registrar dúvidas, sugestões ou informações que podem ajudar outros estudantes.</p>
+                            <ul class="actions">
+                                <li><a href="{% url 'contato' %}" class="button icon solid fa-envelope">Falar com o SSNE</a></li>
+                            </ul>
+                        </section>
+                    </div>
+                    <div class="col-5 col-12-medium">
+                        <section class="ssne-footer-panel">
+                            <div class="ssne-footer-item icon solid fa-map-marker-alt"><div><strong>Campus</strong><span>IFRN · informações de localização e setores</span></div></div>
+                            <div class="ssne-footer-item icon solid fa-bullhorn"><div><strong>Avisos</strong><span>Comunicados organizados por curso quando aplicável</span></div></div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+            <div id="copyright" class="container">
+                <ul class="links">
+                    <li>&copy; SSNE · IFRN</li>
+                    <li>Interface adaptada de Strongly Typed · HTML5 UP</li>
+                </ul>
+            </div>
+        </section>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'ssne/js/jquery.min.js' %}"></script>
+    <script src="{% static 'ssne/js/browser.min.js' %}"></script>
 </body>
 </html>
