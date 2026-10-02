@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% block "content" %}
+<section class="py-5 container">
+    <div class="card w-50">
+        <div class="card-body">
+            <h1 class="card-title text-center">Cadastre-se</h1>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <input type="submit" class="btn btn-primary" value="Cadastrar">
+                </form>
+        </div>
+    </div>
+</section>
+{% endblock "content" %}

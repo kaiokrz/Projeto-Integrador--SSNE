@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}| {% if is_editar %}Editar Aviso{% else %}Novo Aviso{% endif %}{% endblock %}
+{% block content %}
+
+<h1 class="h4 mb-4">{% if is_editar %}Editar Aviso{% else %}Publicar novo Aviso{% endif %}</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% crispy form %}
+</form>
+{{ form.media }}
+
+{% endblock %}
