@@ -18,6 +18,7 @@ class User(AbstractUser):
         verbose_name="Curso",
     )
 
+
     def __str__(self):
         return self.username
 

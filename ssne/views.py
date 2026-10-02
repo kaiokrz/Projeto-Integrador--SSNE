@@ -2,11 +2,24 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from .models import Setor, Aviso
-from .forms import SetorForm, AvisoForm, MensagemForm
+from .forms import SetorForm, AvisoForm, MensagemForm, UserCreationForm
 
 def index(request): 
     return render(request, "ssne/index.html")
 
+def cadastro(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST, request.FILES)
+        if form.is_valid:
+            form.save()
+            return redirect("login")
+    else:
+        form = UserCreationForm()
+        context = {
+            "form":form,
+        }
+        return render(request, "registration/cadastro.html", context)
+    
 @login_required
 @permission_required("ssne.add_setor")
 def novo_setor(request):
@@ -23,7 +36,6 @@ def novo_setor(request):
         "form": form,
     }
     return render(request, "ssne/form_setor.html", context)
-
 
 def setor_detalhe(request, id_setor):
     context = {

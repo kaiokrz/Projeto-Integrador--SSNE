@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Entrar | SSNE{% endblock %}
+{% block content %}
+<section id="main"><div class="container"><div class="row aln-center"><div class="col-6 col-12-medium"><article class="box post ssne-form-card ssne-login-card">
+    <header><p class="ssne-kicker">ACESSO</p><h2>Entrar no SSNE</h2><p>Use sua conta para acessar recursos de gerenciamento e conteúdos personalizados por curso.</p></header>
+    <form method="post" class="ssne-form">{% csrf_token %}{{ form.non_field_errors }}<div class="row gtr-50">
+        <div class="col-12"><label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>{{ form.username }}{{ form.username.errors }}</div>
+        <div class="col-12"><label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>{{ form.password }}{{ form.password.errors }}</div>
+        <div class="col-12"><button type="submit" class="button icon solid fa-sign-in-alt">Entrar</button></div>
+        <a href="{% url 'cadastro' %}">Não tem conta? Clique para criar uma</a>
+    </div><input type="hidden" name="next" value="{{ next }}" /></form>
+</article></div></div></div></section>
+{% endblock %}

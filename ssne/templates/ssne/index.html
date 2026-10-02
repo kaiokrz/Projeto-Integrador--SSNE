@@ -7,6 +7,28 @@
             <p class="ssne-kicker">BEM-VINDO AO CAMPUS</p>
             <h2>Informação certa, <strong>no lugar certo</strong></h2>
         </header>
+        {% for aviso in avisos %}
+                <article class="box post ssne-notice-card">
+                    <header>
+                        <div class="ssne-notice-meta"><span>{{ aviso.data_publicacao|date:'d/m/Y' }}</span><span>{% if aviso.curso %}{{ aviso.get_curso_display }}{% else %}Todos os cursos{% endif %}</span></div>
+                        <h2>{{ aviso.titulo }}</h2>
+                    </header>
+                    {% if aviso.imagem %}<div class="image featured ssne-notice-image"><img src="{{ aviso.imagem.url }}" alt="{{ aviso.titulo }}" /></div>{% endif %}
+                    <div class="ssne-richtext">{{ aviso.conteudo|safe }}</div>
+                    {% if perms.ssne.change_aviso or perms.ssne.delete_aviso %}
+                    <ul class="actions">
+                        {% if perms.ssne.change_aviso %}<li><a href="{% url 'editar_aviso' aviso.id %}" class="button small icon solid fa-pen">Editar</a></li>{% endif %}
+                        {% if perms.ssne.delete_aviso %}<li><a href="{% url 'remover_aviso' aviso.id %}" class="button small alt icon solid fa-trash">Remover</a></li>{% endif %}
+                    </ul>
+                    {% endif %}
+                </article>
+                {% empty %}
+                <article class="box post ssne-empty-state">
+                    <div class="ssne-icon-box icon solid fa-bullhorn"></div>
+                    <h3>Nenhum aviso publicado ainda</h3>
+                    <p>Quando houver um comunicado relevante para os estudantes, ele aparecerá aqui.</p>
+                </article>
+                {% endfor %}
         <div class="row aln-center ssne-feature-row">
             <div class="col-4 col-6-medium col-12-small">
                 <section class="ssne-feature-card">
