@@ -1,3 +1,15 @@
+<<<<<<< HEAD
+{% extends "ssne/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Editar aviso{% endblock %}
+{% block page-title %}<h3 class="display-3">Editar aviso</h3>{% endblock %}
+
+{% block dashboard-content %}
+<div style="min-width: 300px;">
+  {% include "ssne/editar_aviso.html" %}
+</div>
+=======
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block title %}| {% if is_editar %}Editar Aviso{% else %}Novo Aviso{% endif %}{% endblock %}
@@ -11,4 +23,5 @@
 </form>
 {{ form.media }}
 
+>>>>>>> 97c45e89a4816b0d45949e862a3ffaf31802b4c2
 {% endblock %}
