@@ -10,15 +10,15 @@ def index(request):
 def cadastro(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST, request.FILES)
-        if form.is_valid:
+        if form.is_valid():
             form.save()
             return redirect("login")
     else:
         form = UserCreationForm()
-        context = {
-            "form":form,
+    context = {
+        "form":form,
         }
-        return render(request, "registration/cadastro.html", context)
+    return render(request, "registration/cadastro.html", context)
     
 @login_required
 @permission_required("ssne.add_setor")
