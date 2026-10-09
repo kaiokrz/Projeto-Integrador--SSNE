@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {% extends "ssne/base.html" %}
 {% load crispy_forms_tags %}
 
@@ -9,19 +8,4 @@
 <div style="min-width: 300px;">
   {% include "ssne/editar_aviso.html" %}
 </div>
-=======
-{% extends "base.html" %}
-{% load crispy_forms_tags %}
-{% block title %}| {% if is_editar %}Editar Aviso{% else %}Novo Aviso{% endif %}{% endblock %}
-{% block content %}
-
-<h1 class="h4 mb-4">{% if is_editar %}Editar Aviso{% else %}Publicar novo Aviso{% endif %}</h1>
-
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% crispy form %}
-</form>
-{{ form.media }}
-
->>>>>>> 97c45e89a4816b0d45949e862a3ffaf31802b4c2
 {% endblock %}

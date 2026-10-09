@@ -23,7 +23,7 @@
                     <li>
                         <a href="#" class="icon solid fa-tools"><span>Gerenciar</span></a>
                         <ul>
-                            {% if perms.ssne.add_aviso %}<li><a href="{% url 'novo_aviso' %}">Publicar aviso</a></li>{% endif %}
+                            {% if perms.ssne.add_aviso %}<li><a href="{% url 'criar_aviso' %}">Publicar aviso</a></li>{% endif %}
                             {% if perms.ssne.add_setor %}<li><a href="{% url 'novo_setor' %}">Cadastrar setor</a></li>{% endif %}
                             {% if user.is_staff %}<li><a href="{% url 'admin:index' %}">Administração</a></li>{% endif %}
                         </ul>

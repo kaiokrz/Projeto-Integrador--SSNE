@@ -9,8 +9,11 @@ from .models import User, Curso, Setor, Aviso, Mensagem
 class UserCreationForm(DjangoUserCreationForm):
     class Meta:
         model = User
-        fields = ("username",)
-        field_classes = {"username": UsernameField}
+        fields = ("username", "curso")
+        field_classes = {"username": UsernameField}   
+        curso = forms.ChoiceField(
+            choices=Curso.choices
+        )
 
 class MensagemForm(forms.ModelForm):
     class Meta:

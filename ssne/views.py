@@ -4,8 +4,9 @@ from django.contrib.auth.decorators import login_required, permission_required
 from .models import Setor, Aviso
 from .forms import SetorForm, AvisoForm, MensagemForm, UserCreationForm
 
-def index(request): 
-    return render(request, "ssne/index.html")
+def index(request):
+    context = {'avisos': Aviso.objects.all()}
+    return render(request, "ssne/index.html", context)
 
 def cadastro(request):
     if request.method == "POST":
@@ -78,7 +79,7 @@ def remover_setor(request, id_setor):
 
 @login_required
 @permission_required("ssne.add_aviso")
-def novo_aviso(request):
+def criar_aviso(request):
     if request.method == "POST":
         form = AvisoForm(request.POST, request.FILES)
         if form.is_valid():
@@ -93,7 +94,7 @@ def novo_aviso(request):
     context = {
         "form": form,
     }
-    return render(request, "ssne/form_aviso.html", context)
+    return render(request, "ssne/criar_aviso.html", context)
 
 
 @login_required

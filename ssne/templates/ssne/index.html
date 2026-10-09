@@ -75,6 +75,7 @@
                 <header class="ssne-section-heading" id="avisos">
                     <p class="ssne-kicker">COMUNICADOS</p>
                     <h2>{% if user.is_authenticated and user.curso %}Avisos para <strong>{{ user.get_curso_display }}</strong>{% else %}Avisos do campus{% endif %}</h2>
+                    {% if perms.ssne.add_aviso %}<li><a href="{% url 'criar_aviso' %}" class="button small icon solid fa-pen">Novo aviso</a></li>{% endif %}
                 </header>
 
                 {% for aviso in avisos %}
@@ -87,6 +88,7 @@
                     <div class="ssne-richtext">{{ aviso.conteudo|safe }}</div>
                     {% if perms.ssne.change_aviso or perms.ssne.delete_aviso %}
                     <ul class="actions">
+                        
                         {% if perms.ssne.change_aviso %}<li><a href="{% url 'editar_aviso' aviso.id %}" class="button small icon solid fa-pen">Editar</a></li>{% endif %}
                         {% if perms.ssne.delete_aviso %}<li><a href="{% url 'remover_aviso' aviso.id %}" class="button small alt icon solid fa-trash">Remover</a></li>{% endif %}
                     </ul>
