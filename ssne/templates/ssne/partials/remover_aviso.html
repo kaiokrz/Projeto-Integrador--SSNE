@@ -1,0 +1,9 @@
+<div style="min-width: 300px;">
+    <p>Tem certeza de que deseja remover o aviso: <strong>"{{ titulo_objeto }}"</strong>?</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Remover</button>
+        <a href="{% url 'index' %}" class="btn btn-secondary" role="button">Cancelar</a>
+    </form>
+</div>

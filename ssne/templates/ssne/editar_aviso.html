@@ -1,11 +1,11 @@
-{% extends "ssne/base.html" %}
+{% extends "base.html" %}
 {% load crispy_forms_tags %}
 
 {% block title %}Editar aviso{% endblock %}
 {% block page-title %}<h3 class="display-3">Editar aviso</h3>{% endblock %}
 
-{% block dashboard-content %}
+{% block content %}
 <div style="min-width: 300px;">
-  {% include "ssne/editar_aviso.html" %}
+  {% include "ssne/partials/editar_aviso.html" %}
 </div>
 {% endblock %}

@@ -4,8 +4,31 @@ from django.contrib.auth.decorators import login_required, permission_required
 from .models import Setor, Aviso
 from .forms import SetorForm, AvisoForm, MensagemForm, UserCreationForm
 
+from django.db.models import Q
+from .models import Aviso
+
 def index(request):
-    context = {'avisos': Aviso.objects.all()}
+    if request.user.is_authenticated:
+        # Se for Administrador (staff ou superuser), vê TUDO
+        if request.user.is_staff or request.user.is_superuser:
+            avisos = Aviso.objects.all()
+        
+        # Se o usuário logado tiver um curso definido diretamente nele
+        elif request.user.curso:
+            curso_usuario = request.user.curso
+            # Filtra avisos do curso do usuário OU avisos gerais (nulos ou vazios)
+            avisos = Aviso.objects.filter(
+                Q(curso=curso_usuario) | Q(curso__isnull=True) | Q(curso='')
+            ).distinct()
+            
+        else:
+            # Usuário logado mas sem curso definido, vê apenas os avisos gerais
+            avisos = Aviso.objects.filter(Q(curso__isnull=True) | Q(curso=''))
+    else:
+        # Visitante não logado, vê apenas os avisos gerais
+        avisos = Aviso.objects.filter(Q(curso__isnull=True) | Q(curso=''))
+
+    context = {'avisos': avisos}
     return render(request, "ssne/index.html", context)
 
 def cadastro(request):
@@ -114,7 +137,7 @@ def editar_aviso(request, id_aviso):
         "form": form,
         "is_editar": True,
     }
-    return render(request, "ssne/form_aviso.html", context)
+    return render(request, "ssne/editar_aviso.html", context)
 
 
 @login_required
@@ -127,7 +150,7 @@ def remover_aviso(request, id_aviso):
         return redirect("index")
     else:
         context = {"titulo_objeto": aviso.titulo}
-        return render(request, "ssne/confirmar_remocao.html", context)
+        return render(request, "ssne/remover_aviso.html", context)
     
 def contato(request):
     form = MensagemForm(request.POST or None)
