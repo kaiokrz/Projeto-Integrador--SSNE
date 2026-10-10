@@ -9,23 +9,16 @@ from .models import Aviso
 
 def index(request):
     if request.user.is_authenticated:
-        # Se for Administrador (staff ou superuser), vê TUDO
         if request.user.is_staff or request.user.is_superuser:
             avisos = Aviso.objects.all()
-        
-        # Se o usuário logado tiver um curso definido diretamente nele
         elif request.user.curso:
             curso_usuario = request.user.curso
-            # Filtra avisos do curso do usuário OU avisos gerais (nulos ou vazios)
             avisos = Aviso.objects.filter(
                 Q(curso=curso_usuario) | Q(curso__isnull=True) | Q(curso='')
-            ).distinct()
-            
+            ).distinct()  
         else:
-            # Usuário logado mas sem curso definido, vê apenas os avisos gerais
             avisos = Aviso.objects.filter(Q(curso__isnull=True) | Q(curso=''))
     else:
-        # Visitante não logado, vê apenas os avisos gerais
         avisos = Aviso.objects.filter(Q(curso__isnull=True) | Q(curso=''))
 
     context = {'avisos': avisos}
