@@ -18,3 +18,23 @@ body,input,textarea,select{font-family:'Source Sans Pro',Arial,sans-serif}
 .ssne-messages{padding-top:1em}#titleBar{background:var(--ssne-green-900)!important}#titleBar .toggle:before{background:#fff!important;color:var(--ssne-green-900)!important}#navPanel{background:var(--ssne-green-900)!important;border-right-color:#0d3d20!important}#navPanel .link{color:#d5ecd7!important;border-top-color:#0d3d20!important}#navPanel .link.depth-0,#navPanel .depth-0{color:#fff!important}.ssne-alert{display:flex;justify-content:space-between;gap:1em;align-items:center;padding:.9em 1.1em;border:1px solid var(--ssne-line);border-radius:8px;background:#fff;margin-bottom:.7em;color:var(--ssne-ink)}.ssne-alert-success{border-color:#bfe3c3;background:#f1fbf2}.ssne-alert-error,.ssne-alert-danger{border-color:#efc2bd;background:#fff3f1}.ssne-alert-warning{border-color:#efdca8;background:#fffaf0}.ssne-alert-close{border:0!important;color:inherit!important;font-size:1.25rem;line-height:1}
 @media screen and (max-width:980px){#page-wrapper{padding-top:0!important}#header{padding-top:4.5em!important}#header>.container{padding:0!important}.ssne-header-grid{align-items:flex-start;flex-direction:column}.ssne-account-card{width:100%}.ssne-directory-grid{grid-template-columns:1fr}.ssne-filter-form{grid-template-columns:1fr}.ssne-filter-actions{justify-content:flex-start}}
 @media screen and (max-width:736px){#header{padding:3.8em 0 2.2em!important}.ssne-inner-banner{padding:3.2em 0!important}.box.post{padding:1.45em!important}.ssne-stat-grid{grid-template-columns:1fr}.ssne-notice-meta{gap:.35em .8em}.ssne-notice-meta span+span{padding-left:.75em}.ssne-pagination a{width:2.25rem;height:2.25rem}}
+#header > .container {
+    padding: 2em 0 1.5em 0 !important;
+}
+#header p {
+    margin: 0.5em 0 0 0 !important;
+}
+#banner {
+    padding: 2em 0 !important;
+}
+.ssne-header-grid {
+    display: flex;
+    flex-direction: column;  /* empilha um embaixo do outro */
+    align-items: center;     /* centraliza horizontalmente, opcional */
+    gap: 0.5em;               /* espaço entre eles */
+}
+
+/* garante a ordem visual independente da ordem no HTML */
+.ssne-header-grid #logo            { order: 1; }
+.ssne-header-grid .ssne-kicker     { order: 2; }
+.ssne-header-grid .ssne-header-subtitle { order: 3; }
