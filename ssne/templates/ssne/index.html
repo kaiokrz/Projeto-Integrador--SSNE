@@ -59,6 +59,27 @@
                     </ul>
                     {% endif %}
                 </header>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                    {% if avisos.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?pagina={{ avisos.previous_page_number }}" aria-label="Anterior">
+                            <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% for page in range_elided %}
+                        <li class="page-item"><a class="page-link" href="?pagina={{ page }}">{{ page }}</a></li>
+                    {% endfor %}
+                    {% if avisos.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?pagina={{ avisos.next_page_number }}" aria-label="Próxima">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    </ul>
+                </nav>
 
                 {% for aviso in avisos %}
                 <article class="box post ssne-notice-card">

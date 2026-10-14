@@ -2,6 +2,15 @@ from django.db import models
 from tinymce.models import HTMLField
 from django.contrib.auth.models import AbstractUser
 
+class Escola(models.Model):
+    titulo = models.CharField(max_length=300)
+    subtitulo = models.CharField(max_length=300)
+    sobre = models.TextField()
+    contatos = HTMLField()
+
+    def __str__(self):
+        return self.titulo
+    
 class Curso(models.TextChoices):
     INFO = 'INFO', 'Informática'
     EDIFIC = 'EDIFIC', 'Edificações'

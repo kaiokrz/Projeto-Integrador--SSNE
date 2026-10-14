@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
-from .models import Setor, Aviso
+from django.core.paginator import Paginator
+from .models import Escola, Setor, Aviso
 from .forms import SetorForm, AvisoForm, MensagemForm, UserCreationForm
 
 from django.db.models import Q
@@ -20,8 +21,16 @@ def index(request):
             avisos = Aviso.objects.filter(Q(curso__isnull=True) | Q(curso=''))
     else:
         avisos = Aviso.objects.filter(Q(curso__isnull=True) | Q(curso=''))
+    paginator = Paginator(avisos, 3)  
+    numero_da_pagina = request.GET.get('pagina')  
+    print(numero_da_pagina)
+    numero_da_pagina = numero_da_pagina if numero_da_pagina else 1
+    avisos_paginados = paginator.get_page(numero_da_pagina)
+    range_elided = paginator.get_elided_page_range(numero_da_pagina, on_each_side=1, on_ends=1)
 
-    context = {'avisos': avisos}
+    context = {
+        'avisos': avisos_paginados,
+        'range_elided': range_elided,}
     return render(request, "ssne/index.html", context)
 
 def cadastro(request):
