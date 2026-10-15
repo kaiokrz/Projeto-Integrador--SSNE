@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Senha Alterada | SSNE{% endblock %}
+
+{% block content %}
+<section id="main">
+    <div class="container" style="max-width: 600px; margin: 0 auto; text-align: center;">
+        <div class="box post">
+            <div class="ssne-icon-box icon solid fa-check-circle" style="font-size: 3rem; color: #28a745; margin-bottom: 1rem;"></div>
+            <h2>Senha alterada com sucesso!</h2>
+            <p>Sua senha foi atualizada e já está valendo para os próximos acessos.</p>
+            <ul class="actions aln-center" style="margin-top: 2rem;">
+                <li><a href="{% url 'index' %}" class="button primary">Voltar ao início</a></li>
+            </ul>
+        </div>
+    </div>
+</section>
+{% endblock %}

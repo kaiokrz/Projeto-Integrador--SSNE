@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Alterar Senha | SSNE{% endblock %}
+
+{% block content %}
+<section id="main">
+    <div class="container" style="max-width: 600px; margin: 0 auto;">
+        <header class="ssne-section-heading">
+            <p class="ssne-kicker">SEGURANÇA</p>
+            <h2>Alterar sua <strong>senha</strong></h2>
+        </header>
+
+        <div class="box post">
+            <form method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                
+                <div class="actions" style="margin-top: 1.5rem;">
+                    <button type="submit" class="button primary icon solid fa-key">Alterar senha</button>
+                    <a href="{% url 'index' %}" class="button alt">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
